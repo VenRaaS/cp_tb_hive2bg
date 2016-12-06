@@ -4,8 +4,8 @@
 START_DATE=`echo $1`;
 NUM_DAYS=$2
 
-for i in `seq 1 $NUM_DAYS`
+for (( i=0; i<$NUM_DAYS; i++ ))
 do
-  xdate=$(date -d "${START_DATE}+${i} days" +%Y%m%d)
+  xdate=$(date -d "${START_DATE} +${i} days" +%Y%m%d)
   echo $xdate
 done
