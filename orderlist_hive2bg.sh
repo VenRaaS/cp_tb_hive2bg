@@ -1,6 +1,6 @@
 #!/bin/bash
 export EX_DATE=$(date --date="${1-yesterday}" +%Y%m%d)
-export EX_DATE10=$(date --date="${1-yesterday}" +%Y-%m-%d)
+export EX_DATE10=$(date --date="${EX_DATE}" +%Y-%m-%d)
 export TABLE_NM="orderlist_"${EX_DATE}
 export HIVE_TMP_DB="itri"
 export BQ_TMP_DB='itri'
@@ -29,7 +29,7 @@ hive -e "create table ${HIVE_TMP_DB}.${TABLE_NM}
     AS
     select uid,order_no,seq,unix_timestamp(order_date) as order_date,gid,currency,sale_price,final_price,qty,final_amt,promo_id,affiliate_id,dc_price,delivery_type,unix_timestamp(update_time) as update_time
     from angel.all_orderlist
-    where to_date(order_date) = from_unixtime(unix_timestamp('${EX_DATE}' ,'yyyyMMdd'), 'yyyy-MM-dd')"
+    where to_date(order_date) = '${EX_DATE10}'"
 # get file from hdfs
 echo "=>get hdfs files ${HDFS_TMP_DIR} to ./${TABLE_NM}"
 hadoop fs -get ${HDFS_TMP_DIR} .
