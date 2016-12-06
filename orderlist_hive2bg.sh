@@ -25,7 +25,7 @@ echo "=>get hdfs files ${HDFS_TMP_DIR} to ./${TABLE_NM}"
 hadoop fs -get ${HDFS_TMP_DIR} .
 # upload to gs
 echo "=>upload file to gs ${GS_TMP_DIR}"
-gsutil cp ./${TABLE_NM}/* ${GS_TMP_DIR}
+gsutil -m cp ./${TABLE_NM}/* ${GS_TMP_DIR}
 echo "=>create bq temp table - ${BQ_TMP_DB}.${TABLE_NM}- with external gs source - ${GS_TMP_DIR}/*"
 bq load --project_id ${GCP_PROJECT_ID} --source_format=AVRO  ${BQ_TMP_DB}.${TABLE_NM} ${GS_TMP_DIR}/*
 echo "=>create bq table ${BQ_DB}.${TABLE_NM}"
