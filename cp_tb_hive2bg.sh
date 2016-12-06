@@ -1,5 +1,7 @@
 #!/bin/bash
-
+# cp table data from hive to bq
+# using ${SQL_SELECT_FROM_HIVE} loading data from hive
+# using ${SQL_SELECT_INTO_BQ} insert into ${BQ_DB}.${TABLE_NM}
 echo "=>create Hive table -${HIVE_TMP_DB}.${TABLE_NM}"
 hive -e "${SQL_SELECT_FROM_HIVE}"
 # get file from hdfs
