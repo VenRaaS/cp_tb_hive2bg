@@ -9,7 +9,7 @@ export HDFS_TMP_DIR='/user/itri'/${TABLE_NM}
 export GS_TMP_DIR='gs://venraastest-bq-upload'/${TABLE_NM}
 export GCP_PROJECT_ID='venraas-test'
 
-sh ./cleanup_tmp.sh.sh
+sh ./cleanup_tmp.sh
 
 #begin
 echo "=>create Hive table -${HIVE_TMP_DB}.${TABLE_NM}"
@@ -31,4 +31,4 @@ bq load --project_id ${GCP_PROJECT_ID} --source_format=AVRO  ${BQ_TMP_DB}.${TABL
 echo "=>create bq table ${BQ_DB}.${TABLE_NM}"
 bq query --project_id ${GCP_PROJECT_ID} --nouse_legacy_sql --allow_large_results --destination_table=${BQ_DB}.${TABLE_NM} "select uid,order_no,seq,DATETIME(TIMESTAMP_SECONDS(order_date), '+08:00') as order_date,gid,currency,sale_price,final_price,qty,final_amt,promo_id,affiliate_id,dc_price,delivery_type,DATETIME(TIMESTAMP_SECONDS(update_time), '+08:00') as update_time FROM ${BQ_TMP_DB}.${TABLE_NM}"
 
-sh ./cleanup_tmp.sh.sh
+sh ./cleanup_tmp.sh
