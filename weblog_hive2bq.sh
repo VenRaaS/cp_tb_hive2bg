@@ -1,6 +1,7 @@
 #!/bin/bash
 export EX_DATE='20160229'     #$(date --date="${1-yesterday}" +%Y%m%d)
-export EX_DATE10=$(date --date="${1-yesterday}" +%Y-%m-%d)
+export EX_DATE10=$(date --date="${EX_DATE}" +%Y-%m-%d)
+export EX_MONTH=$(date --date="${EX_DATE}" +%Y-%m)
 export TABLE_NM="weblog_"${EX_DATE}
 export HIVE_TMP_DB="itri"
 export BQ_TMP_DB='itri'
@@ -29,7 +30,7 @@ hive -e "create table ${HIVE_TMP_DB}.${TABLE_NM}
     AS
     select uid,page_type,action,client_host,tophost,categ_le,categ_code,gid,trans_id,ilist,now_rec,from_rec,cc_session,cc_guid,ven_session,ven_guid,client_ip,country,browser,unix_timestamp(api_logtime) as api_logtime,client_utc,client_tzo,community,rating,coords_lon,coords_lat,cc_web,api_loghost,optional,agent,device_viewtype,device_id,uri,para,referrer,unix_timestamp(sys_update_time) as sys_update_time
     from momo_unima_20160623.all_weblog
-    where to_date(api_logtime) = from_unixtime(unix_timestamp('${EX_DATE}' ,'yyyyMMdd'), 'yyyy-MM-dd')"
+    where log_mon_i='${EX_MONTH}' AND to_date(api_logtime) = '${EX_DATE10}'"
 # get file from hdfs
 echo "=>get hdfs files ${HDFS_TMP_DIR} to ./${TABLE_NM}"
 hadoop fs -get ${HDFS_TMP_DIR} .
